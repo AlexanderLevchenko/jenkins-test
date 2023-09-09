@@ -1,12 +1,8 @@
-pipeline {
-    agent {
-        any
-    }
-    stages {
-        stage('Build') {
-            steps {
-                sh 'npm install'
+node {
+    stage('npm install') {
+                steps {
+                    echo 'npm install'
+                    // sh 'npm install'
+                }
             }
-        }
-    }
 }
