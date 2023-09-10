@@ -7,10 +7,6 @@ node (label: 'build && linux') {
     docker.image('node:10').pull()
     docker.image('ismail0352/chrome-node').pull()
 
-//     stage('Checkout SCM') {
-//       checkout([$class: 'GitSCM', branches: [[name: 'master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/ismail0352/Packer-Terraform-Jenkins.git']]])
-//     }
-
     // Permorming Install and Lint
     docker.image('node:10').inside {
       stage('Install') {
@@ -18,7 +14,7 @@ node (label: 'build && linux') {
           'Running npm install',
         script: '''
           node --version
-          cd hello-world-node
+          cd jenkins-test
           npm install
         '''
       }
@@ -27,18 +23,10 @@ node (label: 'build && linux') {
         sh label:
           'Running npm run lint',
         script: '''
-          cd hello-world-node
+          cd jenkins-test
           npm run lint
         '''
       }
-    }
-
-    stage('Get test dependency') {
-      sh label:
-        'Downloading chrome.json',
-      script: '''
-        wget https://raw.githubusercontent.com/jfrazelle/dotfiles/master/etc/docker/seccomp/chrome.json -O $WORKSPACE/chrome.json
-      '''
     }
 
     docker.image('ismail0352/chrome-node').inside('--name chrome-node --security-opt seccomp=$WORKSPACE/chrome.json') {
@@ -47,7 +35,7 @@ node (label: 'build && linux') {
           'Running npm run test',
         script: '''
           node --version
-          cd hello-world-node
+          cd jenkins-test
           npm run test
         '''
       }
@@ -58,7 +46,7 @@ node (label: 'build && linux') {
           'Running npm run build',
         script: '''
           node --version
-          cd hello-world-node
+          cd jenkins-test
           npm run build
         '''
       }
