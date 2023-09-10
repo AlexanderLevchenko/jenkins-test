@@ -2,10 +2,6 @@ pipeline {
     agent any
 
     stages {
-        stage('Clean Workspace'){
-            cleanWs()
-          }
-
           stage("Main build") {
             docker.image('node:10').pull()
             docker.image('ismail0352/chrome-node').pull()
