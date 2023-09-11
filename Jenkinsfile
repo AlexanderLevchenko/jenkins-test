@@ -5,7 +5,6 @@ pipeline {
         stage('npm install') {
             steps {
                echo 'npm install...'
-               npm i
            }
         }
 
